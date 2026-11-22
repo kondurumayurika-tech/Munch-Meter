@@ -1,24 +1,24 @@
-# MunchMeter
+# Munch Meter
 
-A small restaurant-review application built from the approved PRD.
+A small restaurant review app for Ludhiana Burrito, built with Next.js 15, Tailwind CSS, and Neon Postgres. The backend stores restaurant and review facts; it computes the average and review count when the restaurant page is requested.
 
-## Stack
+## Run locally
 
-- Next.js 15 App Router
-- TypeScript
-- Tailwind CSS
-- Neon Postgres via `@neondatabase/serverless`
-- Raw SQL only
+1. Install Node.js 20 or newer.
+2. Create `.env.local` in this folder with `DATABASE_URL=your-Neon-connection-string`.
+3. Run `npm run db:setup` to create and seed the two database tables.
+4. Run `npm run dev` and open <http://localhost:3000>.
 
-## Scope
+Never commit `.env.local`; it contains the database password and is ignored by `.gitignore`.
 
-- Write a review at `/review/1`
-- View the restaurant and its reviews at `/restaurant/1`
-- `POST /api/reviews`
-- `GET /api/restaurants/[id]`
+## Routes
 
-The only restaurant is Ludhiana Burrito (Indian, Sector 32). No authentication, listing/search, editing/deleting, photo uploads, ratings breakdown, ORM, or client-side state library.
+- `/restaurant/1` shows the restaurant summary, latest review, and older reviews.
+- `/review/1` collects a rating and comment.
+- `GET /api/restaurants/1` returns the restaurant page data, with the average and count computed in SQL.
+- `POST /api/reviews` validates and saves one review.
 
-## Local setup
+## Database
 
-Use Node.js 20 or newer and npm. Run `npm install`, then configure `DATABASE_URL` in `.env.local` before database setup.
+`db/schema.sql` creates the `restaurants` and `reviews` tables. `db/seed.sql` adds Ludhiana Burrito and three sample reviews. No average or latest-review value is stored; those are computed when the API is called.
+
