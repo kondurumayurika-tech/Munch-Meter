@@ -13,17 +13,56 @@ export async function GET(_request: Request, { params }: RouteContext) {
 
   const sql = getSql();
   const restaurants = await sql`
+    WITH ordered_reviews AS MATERIALIZED (
+      SELECT
+        id,
+        rating,
+        comment,
+        created_at,
+        ROW_NUMBER() OVER (ORDER BY created_at DESC, id DESC) AS position
+      FROM reviews
+      WHERE restaurant_id = ${restaurantId}
+    ), review_summary AS (
+      SELECT
+        ROUND(AVG(rating)::numeric, 1)::float AS average_rating,
+        COUNT(*)::int AS total_reviews
+      FROM ordered_reviews
+    )
     SELECT
-      restaurant.id,
       restaurant.name,
       restaurant.cuisine,
       restaurant.area,
-      ROUND(AVG(review.rating)::numeric, 1)::float AS "averageRating",
-      COUNT(review.id)::int AS "totalReviews"
+      review_summary.average_rating AS "averageRating",
+      review_summary.total_reviews AS "totalReviews",
+      (
+        SELECT jsonb_build_object(
+          'id', id,
+          'rating', rating,
+          'comment', comment,
+          'createdAt', created_at
+        )
+        FROM ordered_reviews
+        WHERE position = 1
+      ) AS "latestReview",
+      COALESCE(
+        (
+          SELECT jsonb_agg(
+            jsonb_build_object(
+              'id', id,
+              'rating', rating,
+              'comment', comment,
+              'createdAt', created_at
+            )
+            ORDER BY position
+          )
+          FROM ordered_reviews
+          WHERE position > 1
+        ),
+        '[]'::jsonb
+      ) AS reviews
     FROM restaurants AS restaurant
-    LEFT JOIN reviews AS review ON review.restaurant_id = restaurant.id
+    CROSS JOIN review_summary
     WHERE restaurant.id = ${restaurantId}
-    GROUP BY restaurant.id
   `;
 
   if (restaurants.length === 0) {
@@ -31,13 +70,6 @@ export async function GET(_request: Request, { params }: RouteContext) {
   }
 
   const restaurant = restaurants[0];
-  const reviews = await sql`
-    SELECT id, rating, comment, created_at AS "createdAt"
-    FROM reviews
-    WHERE restaurant_id = ${restaurantId}
-    ORDER BY created_at DESC, id DESC
-  `;
-  const latestReview = reviews[0] ?? null;
 
   return NextResponse.json({
     name: restaurant.name,
@@ -45,8 +77,8 @@ export async function GET(_request: Request, { params }: RouteContext) {
     area: restaurant.area,
     averageRating: restaurant.averageRating,
     totalReviews: restaurant.totalReviews,
-    latestReview,
-    reviews: latestReview ? reviews.slice(1) : [],
+    latestReview: restaurant.latestReview,
+    reviews: restaurant.reviews,
   });
 }
 
