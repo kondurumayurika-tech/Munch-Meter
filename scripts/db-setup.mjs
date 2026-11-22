@@ -1,8 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { neon } from "@neondatabase/serverless";
-import { loadEnvConfig } from "@next/env";
+import nextEnv from "@next/env";
 
-loadEnvConfig(process.cwd());
+nextEnv.loadEnvConfig(process.cwd());
 
 const databaseUrl = process.env.DATABASE_URL;
 
