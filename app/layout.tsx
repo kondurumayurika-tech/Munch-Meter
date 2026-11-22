@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ludhiana Burrito â€” Munch Meter",
+  title: "Ludhiana Burrito - Munch Meter",
   description: "A small place for honest restaurant reviews.",
 };
 
