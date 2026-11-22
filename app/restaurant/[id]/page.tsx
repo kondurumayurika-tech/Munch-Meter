@@ -26,7 +26,7 @@ function ReviewCard({ review, latest = false }: { review: Review; latest?: boole
     <article className={`rounded-xl border p-5 ${latest ? "border-[#e4cfc4] bg-[#f1e9e2]" : "border-[#e5e0d6] bg-[#fcfbf8]"}`}>
       <div className="mb-3 flex items-center justify-between gap-4">
         <span className="text-sm tracking-[0.12em] text-[#b84c32]" aria-label={`${review.rating} out of 5 stars`}>
-          {"â˜…".repeat(review.rating)}{"â˜†".repeat(5 - review.rating)}
+          {String.fromCharCode(9733).repeat(review.rating)}{String.fromCharCode(9734).repeat(5 - review.rating)}
         </span>
         <time className="text-xs text-[#77736c]" dateTime={review.createdAt}>
           {new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(new Date(review.createdAt))}
@@ -60,19 +60,19 @@ export default function RestaurantPage() {
   }
 
   if (!restaurant) {
-    return <main className="mx-auto max-w-[560px] px-6 py-20"><p className="text-sm text-[#77736c]">Loading restaurantâ€¦</p></main>;
+    return <main className="mx-auto max-w-[560px] px-6 py-20"><p className="text-sm text-[#77736c]">Loading restaurant&hellip;</p></main>;
   }
 
   return (
     <main className="mx-auto min-h-screen max-w-[560px] px-6 py-12 sm:py-20">
       <header className="border-b border-[#e5e0d6] pb-8">
-        <p className="mb-3 text-xs uppercase tracking-[0.2em] text-[#77736c]">Munch Meter Â· Restaurant</p>
+        <p className="mb-3 text-xs uppercase tracking-[0.2em] text-[#77736c]">Munch Meter &middot; Restaurant</p>
         <h1 className="font-serif text-4xl tracking-tight sm:text-5xl">{restaurant.name}</h1>
-        <p className="mt-3 text-sm text-[#77736c]">{restaurant.cuisine} <span className="px-1">Â·</span> {restaurant.area}</p>
+        <p className="mt-3 text-sm text-[#77736c]">{restaurant.cuisine} <span className="px-1">&middot;</span> {restaurant.area}</p>
       </header>
 
       <section className="flex items-end gap-3 py-9" aria-label="Rating summary">
-        <p className="font-serif text-6xl leading-none tracking-tight">{restaurant.averageRating ?? "â€”"}</p>
+        <p className="font-serif text-6xl leading-none tracking-tight">{restaurant.averageRating ?? "No rating"}</p>
         <p className="pb-1 text-sm text-[#77736c]">{restaurant.totalReviews} {restaurant.totalReviews === 1 ? "review" : "reviews"}</p>
       </section>
 
@@ -97,7 +97,7 @@ export default function RestaurantPage() {
 
       <footer className="mt-10 border-t border-[#e5e0d6] pt-6">
         <Link className="inline-flex min-h-11 items-center text-sm font-medium text-[#b84c32] underline decoration-[#d8a392] underline-offset-4" href={`/review/${id}`}>
-          Write a review <span aria-hidden="true" className="ml-2">â†’</span>
+          Write a review <span aria-hidden="true" className="ml-2">&rarr;</span>
         </Link>
       </footer>
     </main>
