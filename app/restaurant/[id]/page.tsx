@@ -21,15 +21,31 @@ type Restaurant = {
   reviews: Review[];
 };
 
+const filledStar = String.fromCharCode(9733);
+const emptyStar = String.fromCharCode(9734);
+const ratingStars = [
+  "",
+  `${filledStar}${emptyStar.repeat(4)}`,
+  `${filledStar.repeat(2)}${emptyStar.repeat(3)}`,
+  `${filledStar.repeat(3)}${emptyStar.repeat(2)}`,
+  `${filledStar.repeat(4)}${emptyStar}`,
+  filledStar.repeat(5),
+];
+const reviewDateFormatter = new Intl.DateTimeFormat("en-IN", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
 function ReviewCard({ review, latest = false }: { review: Review; latest?: boolean }) {
   return (
     <article className={`rounded-xl border p-5 ${latest ? "border-[#e4cfc4] bg-[#f1e9e2]" : "border-[#e5e0d6] bg-[#fcfbf8]"}`}>
       <div className="mb-3 flex items-center justify-between gap-4">
         <span className="text-sm tracking-[0.12em] text-[#b84c32]" aria-label={`${review.rating} out of 5 stars`}>
-          {String.fromCharCode(9733).repeat(review.rating)}{String.fromCharCode(9734).repeat(5 - review.rating)}
+          {ratingStars[review.rating]}
         </span>
         <time className="text-xs text-[#77736c]" dateTime={review.createdAt}>
-          {new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(new Date(review.createdAt))}
+          {reviewDateFormatter.format(new Date(review.createdAt))}
         </time>
       </div>
       <p className="leading-7 text-[#36332f]">{review.comment}</p>
