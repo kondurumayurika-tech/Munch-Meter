@@ -48,7 +48,7 @@ export default function ReviewPage() {
 
   return (
     <main className="mx-auto min-h-screen max-w-[560px] px-6 py-12 sm:py-20">
-      <Link href={`/restaurant/${restaurantId}`} className="text-sm text-[#77736c] underline decoration-[#c9c1b6] underline-offset-4">â† Back to restaurant</Link>
+      <Link href={`/restaurant/${restaurantId}`} className="text-sm text-[#77736c] underline decoration-[#c9c1b6] underline-offset-4">&larr; Back to restaurant</Link>
       <header className="mt-10">
         <p className="mb-3 text-xs uppercase tracking-[0.2em] text-[#77736c]">Write a review</p>
         <h1 className="font-serif text-4xl tracking-tight sm:text-5xl">{restaurantName}</h1>
@@ -66,7 +66,7 @@ export default function ReviewPage() {
                 aria-pressed={rating === value}
                 onClick={() => setRating(value)}
                 className={`flex size-12 items-center justify-center rounded-lg border text-xl transition-colors ${rating === value ? "border-[#b84c32] bg-[#b84c32] text-white" : "border-[#d9d2c7] bg-[#fcfbf8] text-[#b84c32] hover:border-[#b84c32]"}`}
-              >â˜…</button>
+              >&#9733;</button>
             ))}
           </div>
         </fieldset>
@@ -90,7 +90,7 @@ export default function ReviewPage() {
           disabled={rating === null || comment.trim().length === 0 || submitting}
           className="min-h-12 w-full rounded-full bg-[#b84c32] px-6 text-sm font-medium text-white transition hover:bg-[#963b27] disabled:cursor-not-allowed disabled:bg-[#c9c1b6]"
         >
-          {submitting ? "Sendingâ€¦" : "Submit review"}
+          {submitting ? "Sending..." : "Submit review"}
         </button>
       </form>
     </main>
