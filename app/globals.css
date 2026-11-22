@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f8f6f1;
+  --ink: #24221f;
+  --muted: #777168;
+  --accent: #a34f32;
+  --line: #e8e2d8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-shell {
+  width: min(100% - 40px, 560px);
+  min-height: 100vh;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
