@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MunchMeter",
-  description: "Honest reviews, one restaurant at a time.",
+  title: "Ludhiana Burrito â€” Munch Meter",
+  description: "A small place for honest restaurant reviews.",
 };
 
 export default function RootLayout({
@@ -17,3 +17,4 @@ export default function RootLayout({
     </html>
   );
 }
+
